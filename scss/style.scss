@@ -1,0 +1,901 @@
+    @import 'variables',
+    'fonts';
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    li {
+        list-style: none;
+    }
+    
+    html {
+        background: #ccc;
+        width: auto;
+    }
+    
+    body {
+        font-family: "SFProText", -apple-system, BlinkMacSystemFont, sans-serif;
+        max-width: 415px;
+        margin: 100px auto;
+        background: $white;
+        position: relative;
+        color: $mainColor;
+        &.nightMode {
+            color: $white;
+            background: $black;
+        }
+    }
+    
+    h1 {
+        font-family: "SFProDisplay", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    @keyframes showLine {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+    
+    @keyframes changeSizeIcon {
+        10% {
+            transform: scale(.8);
+        }
+        20% {
+            transform: scale(1);
+        }
+        30% {
+            transform: scale(.8);
+        }
+        40% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes glare {
+        30% {
+            left: 300%;
+        }
+        100% {
+            left: 300%;
+        }
+    }
+    
+    .dayOrNight {
+        position: absolute;
+        top: -60px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        padding: 8px 20px;
+        outline: none;
+        border: none;
+        background: $purple;
+        color: $white;
+        cursor: pointer;
+        span {
+            &:last-child {
+                display: none;
+            }
+        }
+        &.night {
+            span {
+                &:first-child {
+                    display: none;
+                }
+                &:last-child {
+                    display: block;
+                }
+            }
+        }
+    }
+    
+    .chartField {
+        padding: 48px 0 73px;
+        background: $purple;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        .chartField__btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.527344);
+            margin-right: 20px;
+            border-radius: 50%;
+            .chartField__btnIcon {
+                width: 16px;
+                height: 16px;
+                z-index: 1;
+            }
+        }
+        .chartField__title {
+            color: $white;
+            width: calc(100% - 40px);
+            text-align: center;
+            font-size: 34px;
+            line-height: 41px;
+            letter-spacing: 0.37px;
+            margin: 0 20px;
+        }
+        .chart {
+            width: 100%;
+            height: 198px;
+            position: relative;
+            margin: 35px 0 40px;
+            z-index: 0;
+            .chart__background1 {
+                position: absolute;
+                opacity: 0.26;
+                z-index: 2;
+                width: 100%;
+                height: 100%;
+                background: $black;
+                filter: blur(135.914px);
+            }
+            .chart__background2 {
+                position: absolute;
+                background: linear-gradient(270deg, rgba(255, 255, 255, 0.0001) 0%, rgba(0, 0, 0, 0.5) 51.57%, rgba(255, 255, 255, 0.0001) 100%);
+                mix-blend-mode: soft-light;
+                opacity: 0.26;
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.2);
+            }
+            .chart__strings {
+                position: absolute;
+                width: 100%;
+                height: calc(100% + 2px);
+                top: -1px;
+                background-image: url(../images/strings.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                z-index: 3;
+            }
+            .chart__list {
+                margin-left: 33px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                height: 100%;
+                .chart__item {
+                    font-size: 12px;
+                    line-height: 14px;
+                    color: $white;
+                    font-weight: 600;
+                }
+            }
+            .chart__lines {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                z-index: 4;
+                .chart__topLine {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 77px;
+                    .anime__line {
+                        width: 100%;
+                        height: 100%;
+                        svg {
+                            padding: 0;
+                            .path {
+                                stroke-dasharray: 500;
+                                stroke-dashoffset: 500;
+                                animation: showLine 2.4s ease-in forwards;
+                            }
+                        }
+                    }
+                    .chart__mark {
+                        opacity: 0;
+                        transform: scale(1.2);
+                        &.chart__mark--active {
+                            opacity: 1;
+                            transition: .2s;
+                            transform: scale(1);
+                        }
+                    }
+                    .chart__topLine-mark {
+                        position: absolute;
+                        content: '';
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #EE304E;
+                        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.139942);
+                        border: 3px solid #FFFFFF;
+                        right: 32px;
+                        bottom: 0;
+                        display: flex;
+                        justify-content: center;
+                        .chart__icon {
+                            position: absolute;
+                            width: 51px;
+                            height: 27px;
+                            filter: drop-shadow(0px 2px 4px rgba(90, 0, 124, 0.258332));
+                            bottom: 19px;
+                            background-image: url(../images/Free.png);
+                            background-size: contain;
+                            background-position: center;
+                            background-repeat: no-repeat;
+                        }
+                    }
+                }
+                .chart__bottomLine {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 180px;
+                    .anime__line {
+                        width: 100%;
+                        height: 100%;
+                        svg {
+                            padding: 0;
+                            .path {
+                                stroke-dasharray: 500;
+                                stroke-dashoffset: 500;
+                                animation: showLine 2.5s ease-in forwards;
+                            }
+                        }
+                    }
+                    .chart__mark {
+                        opacity: 0;
+                        transform: scale(1.2);
+                        transition: all .2s;
+                        &.chart__mark--active {
+                            opacity: 1;
+                            transition: .2s;
+                            transform: scale(1);
+                        }
+                    }
+                    .chart__bottomLine-mark {
+                        position: absolute;
+                        content: '';
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #04CD00;
+                        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.139942);
+                        border: 3px solid #FFFFFF;
+                        right: 32px;
+                        bottom: 5px;
+                        display: flex;
+                        justify-content: center;
+                        .chart__icon {
+                            position: absolute;
+                            width: 51px;
+                            height: 27px;
+                            filter: drop-shadow(0px 2px 4px rgba(90, 0, 124, 0.258332));
+                            bottom: 19px;
+                            background-image: url(../images/PRO.png);
+                            background-size: contain;
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            transform: scale(1);
+                            animation-name: changeSizeIcon;
+                            animation-duration: 3s;
+                            animation-iteration-count: infinite;
+                        }
+                    }
+                }
+                &::before {
+                    position: absolute;
+                    content: '';
+                    height: 200%;
+                    width: 50px;
+                    transform: rotate(-45deg);
+                    top: 0;
+                    bottom: 0;
+                    margin: auto 0;
+                    left: -100%;
+                    filter: blur(30px);
+                    background: rgba(255, 255, 255, 0.5);
+                    z-index: 5;
+                    animation-name: glare;
+                    animation-duration: 8s;
+                    animation-iteration-count: infinite;
+                    animation-delay: 3s;
+                }
+            }
+            .chart__girl {
+                position: absolute;
+                right: 115px;
+                bottom: -30px;
+                width: 112px;
+                height: 250px;
+                z-index: 5;
+                .chart__girlPicture {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+    
+    .wrapper-slider {
+        margin-top: -73px;
+        .slider {
+            .slick-list {
+                .slick-track {
+                    .slick-slide {
+                        div {
+                            display: flex;
+                            justify-content: center;
+                        }
+                    }
+                }
+            }
+            .slide__item {
+                min-height: 102px;
+                max-width: 334px;
+                padding: 20px 20px 24px;
+                backdrop-filter: blur(9.06094px);
+                border-radius: 10px;
+                background: #F3F2F9;
+                margin: 0 2.5px;
+                .slide__topString {
+                    display: flex;
+                    justify-content: space-between !important;
+                    margin-bottom: 10px;
+                    .slide__result {
+                        font-size: 15px;
+                        line-height: 18px;
+                        font-weight: 600;
+                    }
+                    .slide__autor {
+                        font-size: 15px;
+                        line-height: 18px;
+                        opacity: 0.5;
+                    }
+                }
+                .jq-ry-container {
+                    padding: 0;
+                    .jq-ry-group-wrapper {
+                        .jq-ry-group {
+                            &.jq-ry-rated-group {
+                                display: block !important;
+                            }
+                        }
+                    }
+                }
+                .slide__message {
+                    font-size: 15px;
+                    line-height: 18px;
+                    margin-top: 16px;
+                }
+            }
+            &.nightMode {
+                .slide__item {
+                    background: $reviewsBCG;
+                }
+            }
+        }
+    }
+    
+    .slider2 {
+        .slick-list {
+            .slick-track {
+                .slick-slide {
+                    div {
+                        width: 100px;
+                        margin: 0 auto;
+                    }
+                }
+            }
+        }
+        .box {
+            width: 100px;
+            margin: 10px auto;
+            height: 50px;
+            background: red;
+            border: 1px solid #000;
+        }
+    }
+    
+    .prices {
+        margin-top: 29px;
+        .container {
+            width: calc(100% - 40px);
+            margin: 0 20px;
+            .proposals {
+                margin-bottom: 29px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                position: relative;
+                .prices__proposal {
+                    width: 31.41%;
+                    background: #F3F2F9;
+                    backdrop-filter: blur(9.06094px);
+                    border-radius: 5px;
+                    text-align: center;
+                    cursor: pointer;
+                    .prices__save {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 25px;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        letter-spacing: 0.78px;
+                        text-transform: uppercase;
+                        font-size: 13px;
+                        line-height: 15px;
+                        font-weight: 700;
+                        border-top-left-radius: 5px;
+                        border-top-right-radius: 5px;
+                        color: $mainColor;
+                    }
+                    .prices__sale {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        height: 16px;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        letter-spacing: 0.54px;
+                        text-transform: uppercase;
+                        font-size: 9px;
+                        line-height: 15px;
+                        font-weight: 700;
+                        border-bottom-left-radius: 5px;
+                        border-bottom-right-radius: 5px;
+                        color: $mainColor;
+                    }
+                    .prices__time {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        margin-bottom: 12px;
+                        span {
+                            font-size: 20px;
+                            line-height: 28px;
+                            font-weight: 700;
+                            &:first-child {
+                                font-size: 24px;
+                            }
+                            &:nth-child(2) {
+                                line-height: 17px;
+                            }
+                        }
+                    }
+                    .prices__cost {
+                        font-size: 13px;
+                        line-height: 16px;
+                        letter-spacing: -0.354546px;
+                        max-width: 58px;
+                        margin: 0 auto 6px;
+                    }
+                    .prices__comparison {
+                        font-size: 13px;
+                        line-height: 16px;
+                        letter-spacing: -0.354546px;
+                    }
+                    &:nth-child(1) {
+                        padding: 6px 9px 35px;
+                    }
+                    &:nth-child(2) {
+                        margin: 0 10px;
+                        .prices__save {
+                            background: #FCBF59;
+                            backdrop-filter: blur(9.06094px);
+                        }
+                    }
+                    &:nth-child(2),
+                    &:nth-child(3) {
+                        padding: 31px 9px 35px;
+                    }
+                    &:nth-child(3) {
+                        .prices__sale,
+                        .prices__save {
+                            background: #FCA759;
+                            backdrop-filter: blur(9.06094px);
+                        }
+                    }
+                    &.active {
+                        background: $purple;
+                        color: $white;
+                    }
+                }
+            }
+            .continue__btn {
+                width: 100%;
+                height: 50px;
+                border-radius: 5px;
+                background: linear-gradient(225deg, #542285 0%, #222266 100%);
+                font-weight: 600;
+                font-size: 22px;
+                line-height: 28px;
+                letter-spacing: 0.0352px;
+                outline: none;
+                border: none;
+                margin-bottom: 20px;
+                .continue {
+                    width: 100%;
+                    height: 100%;
+                    color: $white;
+                    border-radius: 5px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+            }
+            .additionally {
+                padding-bottom: 40px;
+                font-size: 11px;
+                line-height: 15px;
+                width: 100%;
+                text-align: center;
+                color: $black;
+                mix-blend-mode: normal;
+                opacity: 0.4;
+            }
+        }
+        &.nightMode {
+            .container {
+                .proposals {
+                    .prices__proposal {
+                        background: #373640;
+                        &.active {
+                            background: $purple;
+                            color: $white;
+                        }
+                    }
+                }
+                .additionally {
+                    color: #7D7D80;
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:410px) {
+        .chartField {
+            .chart {
+                .chart__lines {
+                    .chart__bottomLine {
+                        .chart__bottomLine-mark {
+                            bottom: 9px;
+                        }
+                    }
+                    .chart__topLine {
+                        .chart__topLine-mark {
+                            bottom: 2px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:400px) {
+        .chartField {
+            .chart {
+                height: 185px;
+                .chart__lines {
+                    .chart__bottomLine {
+                        .chart__bottomLine-mark {
+                            bottom: 14px;
+                        }
+                    }
+                    .chart__topLine {
+                        .chart__topLine-mark {
+                            bottom: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:390px) {
+        .chartField {
+            .chart {
+                .chart__lines {
+                    .chart__bottomLine {
+                        .chart__bottomLine-mark {
+                            bottom: 17px;
+                        }
+                    }
+                    .chart__topLine {
+                        .chart__topLine-mark {
+                            bottom: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:380px) {
+        .chartField {
+            .chart {
+                height: 183px;
+                margin: 20px 0;
+                .chart__lines {
+                    .chart__bottomLine {
+                        .chart__bottomLine-mark {
+                            bottom: 20px;
+                        }
+                    }
+                    .chart__topLine {
+                        .chart__topLine-mark {
+                            bottom: 8px;
+                        }
+                    }
+                }
+                .chart__girl {
+                    width: 95px;
+                    height: 213px;
+                    right: 108px;
+                    bottom: -15px;
+                }
+                .chart__list {
+                    margin-left: 20px;
+                }
+            }
+        }
+        .prices {
+            margin-top: 20px;
+            .container {
+                .proposals {
+                    margin-bottom: 21px;
+                    .prices__proposal {
+                        .prices__time {
+                            margin-bottom: 7px;
+                        }
+                        &:nth-child(1) {
+                            padding: 2px 9px 24px;
+                        }
+                        &:nth-child(2),
+                        &:nth-child(3) {
+                            padding: 27px 9px 24px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:370px) {
+        .prices {
+            margin-top: 12px;
+            .container {
+                .proposals {
+                    margin-bottom: 13px;
+                    .prices__proposal {
+                        .prices__time {
+                            margin-bottom: 5px;
+                            span {
+                                &:first-child {
+                                    font-size: 20px;
+                                    line-height: 23px;
+                                }
+                                &:last-child {
+                                    font-size: 17px;
+                                }
+                            }
+                        }
+                        .prices__save {
+                            height: 21px;
+                            font-size: 11px;
+                            letter-spacing: 0.66px;
+                        }
+                        .prices__sale {
+                            letter-spacing: 0.42px;
+                            font-size: 7px;
+                            height: 15px;
+                        }
+                        .prices__cost {
+                            margin-bottom: 3px;
+                            font-size: 11px;
+                            line-height: 13px;
+                            letter-spacing: -0.3px;
+                        }
+                        .prices__comparison {
+                            font-size: 10px;
+                            line-height: 12px;
+                            letter-spacing: -0.272727px;
+                        }
+                        &:nth-child(1) {
+                            padding: 3px 0px 23px;
+                        }
+                        &:nth-child(2),
+                        &:nth-child(3) {
+                            padding: 24px 0px 23px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:360px) {
+        .chartField {
+            .chart {
+                height: 160px;
+                .chart__lines {
+                    .chart__bottomLine {
+                        .anime__line {
+                            svg {
+                                width: 100%;
+                                height: 154px;
+                            }
+                        }
+                        .chart__bottomLine-mark {
+                            bottom: 32px;
+                        }
+                    }
+                    .chart__topLine {
+                        .anime__line {
+                            svg {
+                                width: 100%;
+                                height: 66px;
+                            }
+                        }
+                        .chart__topLine-mark {
+                            bottom: 12px;
+                        }
+                    }
+                }
+                .chart__strings {
+                    background-size: contain;
+                }
+                .chart__girl {
+                    width: 86px;
+                    height: 195px;
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:350px) {
+        .chartField {
+            .chart {
+                .chart__lines {
+                    .chart__bottomLine {
+                        .chart__bottomLine-mark {
+                            bottom: 37px;
+                        }
+                    }
+                    .chart__topLine {
+                        .chart__topLine-mark {
+                            bottom: 14px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:340px) {
+        .chartField {
+            .chart {
+                .chart__lines {
+                    .chart__bottomLine {
+                        .chart__bottomLine-mark {
+                            bottom: 41px;
+                        }
+                    }
+                    .chart__topLine {
+                        .chart__topLine-mark {
+                            bottom: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @media screen and (max-width:330px) {
+        .chartField {
+            padding: 30px 0 55px;
+            .chartField__title {
+                font-size: 24px;
+                line-height: 41px;
+                letter-spacing: 0.261176px;
+            }
+            .chart {
+                height: 102px;
+                margin: 6px 0 10px;
+                .chart__lines {
+                    height: calc(100% + 20px);
+                    padding: 5px 0;
+                    margin-top: -4px;
+                    .chart__bottomLine {
+                        .anime__line {
+                            svg {
+                                transform: rotate( 352deg);
+                                margin-top: -18px;
+                            }
+                        }
+                        .chart__bottomLine-mark {
+                            bottom: 83px;
+                            .chart__icon {
+                                bottom: 15px;
+                            }
+                        }
+                    }
+                    .chart__topLine {
+                        .anime__line {
+                            svg {
+                                transform: rotate( 356deg);
+                                margin-top: -9px;
+                            }
+                        }
+                        .chart__topLine-mark {
+                            bottom: 32px;
+                            .chart__icon {
+                                bottom: 15px;
+                            }
+                        }
+                    }
+                }
+                .chart__girl {
+                    width: 53px;
+                    height: 117px;
+                    bottom: -7px;
+                    right: 99px;
+                }
+            }
+        }
+        .wrapper-slider {
+            margin-top: -55px;
+            .slider {
+                .slide__item {
+                    padding: 15px 15px 12px;
+                    min-height: 83px;
+                    .slide__topString {
+                        margin-bottom: 7px;
+                    }
+                    .rate-yo {
+                        .jq-ry-group-wrapper {
+                            .jq-ry-group {
+                                &.jq-ry-normal-group {
+                                    margin-left: -15px;
+                                    svg {
+                                        width: 17px;
+                                        height: 17px;
+                                    }
+                                }
+                                &.jq-ry-rated-group {
+                                    svg {
+                                        width: 17px;
+                                        height: 17px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .slide__message {
+                        font-size: 13px;
+                        line-height: 16px;
+                        margin-top: 8px;
+                    }
+                }
+            }
+        }
+        .chartField {
+            .chartField__btn {
+                margin-bottom: -16px;
+            }
+        }
+    }
